@@ -1,80 +1,20 @@
 import express from "express";
 // prettier-ignore
-import {listContacts, getContactById, removeContact, addContact, updateContactById} from "../../models/contacts.js";
-import { contactValidation } from "../../validations/validations.js";
-import { httpError } from "../../helpers/httpError.js";
+import {addContact, getAllContacts, getContactById, deleteContactById, updateContactById, updateStatusContact} from "../../controllers/contactsController.js";
+import { ctrlWrapper } from "../../helpers/ctrlWrapper.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
-  try {
-    const result = await listContacts();
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/", ctrlWrapper(getAllContacts));
 
-router.get("/:contactId", async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const result = await getContactById(contactId);
+router.get("/:contactId", ctrlWrapper(getContactById));
 
-    if (!result) {
-      throw httpError(404);
-    }
+router.post("/", ctrlWrapper(addContact));
 
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+router.delete("/:contactId", ctrlWrapper(deleteContactById));
 
-router.post("/", async (req, res, next) => {
-  try {
-    const { error } = contactValidation.validate(req.body);
-    if (error) {
-      throw httpError(400, "missing required name field");
-    }
-    const result = await addContact(req.body);
-    res.status(201).json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+router.put("/:contactId", ctrlWrapper(updateContactById));
 
-router.delete("/:contactId", async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const result = await removeContact(contactId);
-
-    if (!result) {
-      throw httpError(404);
-    }
-    res.json({
-      message: "Contact deleted",
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.put("/:contactId", async (req, res, next) => {
-  try {
-    const { error } = contactValidation.validate(req.body);
-    if (error) {
-      throw httpError(400, "missing fields");
-    }
-    const { contactId } = req.params;
-    const result = await updateContactById(contactId, req.body);
-
-    if (!result) {
-      throw httpError(404);
-    }
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+router.patch("/:contactId/favorite", ctrlWrapper(updateStatusContact));
 
 export { router };
