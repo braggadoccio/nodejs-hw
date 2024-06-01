@@ -1,7 +1,8 @@
 import express from "express";
 // prettier-ignore
-import {addContact, getAllContacts, getContactById, deleteContactById, updateContactById, updateStatusContact} from "../../controllers/contactsController.js";
+import { addContact, getAllContacts, getContactById, deleteContactById, updateContactById, updateStatusContact } from "../../controllers/contactsController.js";
 import { ctrlWrapper } from "../../helpers/ctrlWrapper.js";
+import { authenticateToken } from "../../middlewares/autenticateToken.js";
 
 const router = express.Router();
 
@@ -9,12 +10,13 @@ router.get("/", ctrlWrapper(getAllContacts));
 
 router.get("/:contactId", ctrlWrapper(getContactById));
 
-router.post("/", ctrlWrapper(addContact));
+router.post("/", authenticateToken, ctrlWrapper(addContact));
 
-router.delete("/:contactId", ctrlWrapper(deleteContactById));
+router.delete("/:contactId", authenticateToken, ctrlWrapper(deleteContactById));
 
-router.put("/:contactId", ctrlWrapper(updateContactById));
+router.put("/:contactId", authenticateToken, ctrlWrapper(updateContactById));
 
-router.patch("/:contactId/favorite", ctrlWrapper(updateStatusContact));
+// prettier-ignore
+router.patch( "/:contactId/favorite", authenticateToken, ctrlWrapper(updateStatusContact));
 
 export { router };
