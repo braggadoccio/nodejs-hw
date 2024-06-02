@@ -14,7 +14,7 @@ const signupValidation = Joi.object({
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .required()
-    .message({
+    .messages({
       "any.required": "Missing required field",
       "string.email": "Invalid email format",
     }),
