@@ -1,6 +1,6 @@
 import express from "express";
 // prettier-ignore
-import { signupUser, loginUser, logoutUser, getCurrentUsers, updateUserSubscription } from "../../controllers/usersController.js";
+import { signupUser, loginUser, logoutUser, getCurrentUsers, updateUserSubscription, updateAvatar } from "../../controllers/usersController.js";
 import { ctrlWrapper } from "../../helpers/ctrlWrapper.js";
 import { authenticateToken } from "../../middlewares/autenticateToken.js";
 
@@ -15,5 +15,8 @@ router.get("/logout", authenticateToken, ctrlWrapper(logoutUser));
 router.get("/current", authenticateToken, ctrlWrapper(getCurrentUsers));
 
 router.patch("/", authenticateToken, ctrlWrapper(updateUserSubscription));
+
+//prettier-ignore
+router.patch("/avatars", authenticateToken, upload.single("avatar"), ctrlWrapper(updateAvatar));
 
 export { router };
