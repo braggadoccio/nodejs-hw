@@ -3,6 +3,7 @@ import express from "express";
 import { signupUser, loginUser, logoutUser, getCurrentUsers, updateUserSubscription, updateAvatar } from "../../controllers/usersController.js";
 import { ctrlWrapper } from "../../helpers/ctrlWrapper.js";
 import { authenticateToken } from "../../middlewares/autenticateToken.js";
+import { upload } from "../../middlewares/upload.js";
 
 const router = express.Router();
 

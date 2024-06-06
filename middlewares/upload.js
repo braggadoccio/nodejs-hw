@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";
 
-const tempath = path.join(tmp);
+const tempath = path.join("tmp");
 
 const multerConfig = multer.diskStorage({
   destination: tempath,
