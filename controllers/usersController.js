@@ -39,6 +39,7 @@ const signupUser = async (req, res) => {
     user: {
       email: newUser.email,
       subscription: newUser.subscription,
+      avatarURL: newUser.avatarURL,
     },
   });
 };
@@ -116,16 +117,16 @@ const updateAvatar = async (req, res) => {
   );
 
   const extension = path.extname(originalname);
-
   const filename = `${_id}${extension}`;
-  const newPath = path.join("/avatars", filename);
+
+  const newPath = path.join("public", "avatars", filename);
   await fs.rename(oldPath, newPath);
 
   let avatarURL = path.join("/avatars", filename);
   // avatarURL = avatarURL.replace(/\\/g, "/");
 
-  await User.finfByIdAndUpdate(_id, avatarURL);
-  res.status(200).json(avatarURL);
+  await User.findByIdAndUpdate(_id, { avatarURL });
+  res.status(200).json({ avatarURL });
 };
 
 // prettier-ignore

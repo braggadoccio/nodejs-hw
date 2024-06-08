@@ -13,6 +13,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use(express.static("public"));
+// http://localhost:3000/avatars/6662d8e76119454fed82c49c.jpg
+// http://localhost:3000/avatars/6662d8e76119454fed82c49c.png
 
 app.use("/api/contacts", contactsRouter);
 app.use("/api/users", usersRouter);
